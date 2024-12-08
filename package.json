@@ -2,11 +2,15 @@
   "name": "kairai",
   "version": "1.0.0",
   "description": "Build Your Own Web Server From Scratch in Node.JS",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "typescript": "^5.7.2"
+  }
 }
