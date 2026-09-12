@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--
+    安全策略：只允许加载注入进来的样式/脚本，杜绝外部资源与内联脚本。
+    占位符 {{cspSource}} 与 {{nonce}} 由 src/webview/panel.ts 注入。
+  -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; style-src {{cspSource}}; script-src 'nonce-{{nonce}}';">
+  <link href="{{styleUri}}" rel="stylesheet">
+  <title>Kairai 面板</title>
+</head>
+<body>
+  <main>
+    <h1>Kairai 面板</h1>
+    <p class="hint">
+      这是一个示例 Webview：点击按钮会向扩展发送消息，扩展处理后会把计数回传。
+    </p>
+    <button id="counter" type="button">点击 +1</button>
+    <p class="current">当前计数：<span id="count">0</span></p>
+    <section id="log" class="log" aria-live="polite"></section>
+  </main>
+  <script nonce="{{nonce}}" src="{{scriptUri}}"></script>
+</body>
+</html>

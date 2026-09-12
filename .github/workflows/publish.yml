@@ -1,0 +1,43 @@
+name: Publish
+
+on:
+  # 手动触发（可选填版本参数：patch / minor / major，留空则用 package.json 现有版本）
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "版本升级级别（patch / minor / major，留空则使用 package.json 现有版本）"
+        required: false
+        default: ""
+  # 推送 v* 标签时自动触发（如 v1.2.3）
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Package VSIX
+        run: npx @vscode/vsce package
+
+      - name: Publish to Visual Studio Marketplace
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+          # 通过环境变量传递，避免把 GitHub 表达式直接拼进 shell 命令
+          PUBLISH_VERSION: ${{ github.event.inputs.version }}
+        run: |
+          # 白名单校验，防止意外注入
+          case "$PUBLISH_VERSION" in
+            patch|minor|major) npx @vscode/vsce publish "$PUBLISH_VERSION" -p "$VSCE_PAT" ;;
+            "")                npx @vscode/vsce publish -p "$VSCE_PAT" ;;
+            *)                 echo "无效的版本级别: $PUBLISH_VERSION" && exit 1 ;;
+          esac

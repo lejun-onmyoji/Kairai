@@ -1,0 +1,60 @@
+:root {
+  --bg: var(--vscode-editor-background);
+  --fg: var(--vscode-editor-foreground);
+  --accent: var(--vscode-button-background);
+  --accent-fg: var(--vscode-button-foreground);
+  --border: var(--vscode-panel-border);
+  --muted: var(--vscode-descriptionForeground);
+}
+
+body {
+  margin: 0;
+  padding: 1.5rem;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--vscode-font-family);
+  font-size: var(--vscode-font-size);
+}
+
+h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.4rem;
+}
+
+.hint {
+  color: var(--muted);
+  margin-bottom: 1.25rem;
+}
+
+button {
+  background: var(--accent);
+  color: var(--accent-fg);
+  border: none;
+  border-radius: 2px;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button:hover {
+  filter: brightness(1.1);
+}
+
+.current {
+  margin: 1rem 0 0;
+}
+
+.log {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  max-height: 12rem;
+  overflow-y: auto;
+}
+
+.log-line {
+  color: var(--muted);
+  font-size: 0.9em;
+  line-height: 1.6;
+}

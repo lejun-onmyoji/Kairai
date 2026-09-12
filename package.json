@@ -1,16 +1,95 @@
 {
-  "name": "kairai",
-  "version": "1.0.0",
-  "description": "Build Your Own Web Server From Scratch in Node.JS",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "kairai-scaffold",
+  "displayName": "Kairai Scaffold",
+  "description": "一个 VS Code 扩展脚手架：内置命令、Webview 面板、配置项与状态栏示例，开箱即用。",
+  "version": "0.0.1",
+  "publisher": "kairai",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.96.0"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "scaffold",
+    "template",
+    "webview",
+    "脚手架"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kairai/kairai-scaffold"
+  },
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "kairai.helloWorld",
+        "title": "Kairai: 打个招呼",
+        "category": "Kairai"
+      },
+      {
+        "command": "kairai.openPanel",
+        "title": "Kairai: 打开面板",
+        "category": "Kairai",
+        "icon": "$(layout)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "kairai.openPanel",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Kairai",
+      "properties": {
+        "kairai.greeting": {
+          "type": "string",
+          "default": "Hello, Kairai!",
+          "scope": "window",
+          "markdownDescription": "状态栏显示的问候语，修改后立即生效（演示配置项的读取与监听）。"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "npm run check-types && npm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "watch:tsc:webview": "tsc --noEmit --watch --project tsconfig.webview.json",
+    "package": "npm run check-types && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "check-types": "npm run check-types:extension && npm run check-types:webview",
+    "check-types:extension": "tsc --noEmit -p tsconfig.json",
+    "check-types:webview": "tsc --noEmit -p tsconfig.webview.json",
+    "lint": "eslint src",
+    "test": "vscode-test",
+    "package:vsix": "vsce package",
+    "publish:marketplace": "vsce publish"
+  },
   "devDependencies": {
-    "@types/node": "^22.10.1",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.96.0",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/parser": "^8.17.0",
+    "@vscode/test-cli": "^0.0.15",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^3.2.1",
+    "esbuild": "^0.24.0",
+    "eslint": "^9.16.0",
+    "npm-run-all": "^4.1.5",
     "typescript": "^5.7.2"
   }
 }
