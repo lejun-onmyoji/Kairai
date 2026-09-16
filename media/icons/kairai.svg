@@ -1,0 +1,10 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    活动栏图标。约定：
+      - 24×24、单色、无内联脚本（VS Code 会直接渲染它）；
+      - 用 fill="currentColor"，由 VS Code 按当前主题着色，深浅色主题都能看清。
+  -->
+  <path d="M12 2.2L14.35 9.65L21.8 12L14.35 14.35L12 21.8L9.65 14.35L2.2 12L9.65 9.65L12 2.2Z"
+        fill="currentColor"/>
+  <circle cx="18.6" cy="18.6" r="1.7" fill="currentColor"/>
+</svg>

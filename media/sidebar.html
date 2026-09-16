@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--
+    安全策略：只允许加载注入进来的样式/脚本，杜绝外部资源与内联脚本。
+    占位符 {{cspSource}} 与 {{nonce}} 由 src/sidebar/provider.ts 注入。
+  -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; style-src {{cspSource}}; script-src 'nonce-{{nonce}}';">
+  <link href="{{styleUri}}" rel="stylesheet">
+  <title>Kairai 侧栏</title>
+</head>
+<body>
+  <!-- 顶部功能切换栏：按钮由 Webview 脚本根据宿主下发的功能清单生成 -->
+  <nav id="feature-nav" class="feature-nav" aria-label="功能切换"></nav>
+  <!-- 功能内容区：当前功能的界面挂载在这里 -->
+  <main id="feature-content" class="feature-content"></main>
+  <script nonce="{{nonce}}" src="{{scriptUri}}"></script>
+</body>
+</html>

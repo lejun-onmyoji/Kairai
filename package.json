@@ -1,7 +1,7 @@
 {
   "name": "kairai-scaffold",
   "displayName": "Kairai Scaffold",
-  "description": "一个 VS Code 扩展脚手架：内置命令、Webview 面板、配置项与状态栏示例，开箱即用。",
+  "description": "一个 VS Code 扩展脚手架：内置命令、Webview 面板、可扩展的侧栏（WebviewView）框架、配置项与状态栏示例，开箱即用。",
   "version": "0.0.1",
   "publisher": "kairai",
   "license": "MIT",
@@ -15,6 +15,8 @@
     "scaffold",
     "template",
     "webview",
+    "webviewview",
+    "sidebar",
     "脚手架"
   ],
   "repository": {
@@ -37,12 +39,48 @@
         "title": "Kairai: 打开面板",
         "category": "Kairai",
         "icon": "$(layout)"
+      },
+      {
+        "command": "kairai.openSidebar",
+        "title": "Kairai: 打开侧栏",
+        "category": "Kairai"
+      },
+      {
+        "command": "kairai.switchFeature",
+        "title": "Kairai: 切换侧栏功能",
+        "category": "Kairai",
+        "icon": "$(arrow-swap)"
       }
     ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "kairai",
+          "title": "Kairai",
+          "icon": "media/icons/kairai.svg"
+        }
+      ]
+    },
+    "views": {
+      "kairai": [
+        {
+          "id": "kairai.sidebar",
+          "name": "Kairai",
+          "type": "webview"
+        }
+      ]
+    },
     "menus": {
       "editor/title": [
         {
           "command": "kairai.openPanel",
+          "group": "navigation"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "kairai.switchFeature",
+          "when": "view == kairai.sidebar",
           "group": "navigation"
         }
       ]

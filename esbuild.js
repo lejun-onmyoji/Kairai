@@ -1,8 +1,9 @@
 /**
- * esbuild 打包脚本：构建两个产物。
+ * esbuild 打包脚本：构建三个产物。
  *
- *   1. dist/extension.js   —— 扩展宿主（Node.js）代码，CJS 格式，vscode 模块 external；
- *   2. dist/media/main.js  —— Webview（浏览器）脚本，IIFE 格式，无 Node 依赖。
+ *   1. dist/extension.js      —— 扩展宿主（Node.js）代码，CJS 格式，vscode 模块 external；
+ *   2. dist/media/main.js     —— 面板 Webview（浏览器）脚本，IIFE 格式，无 Node 依赖；
+ *   3. dist/media/sidebar.js  —— 侧栏 Webview（浏览器）脚本，同上，独立产物。
  *
  * 用法：
  *   node esbuild.js                 # 开发模式：一次构建（不压缩，带 sourcemap）
@@ -11,7 +12,8 @@
  *
  * 关键点：
  *   - external: ["vscode"]：vscode 模块由 VS Code 运行时提供，绝不打包进产物（仅扩展宿主目标）；
- *   - format: "cjs" / "iife"：扩展宿主是 Node.js 要 CommonJS，Webview 无模块系统要 IIFE。
+ *   - format: "cjs" / "iife"：扩展宿主是 Node.js 要 CommonJS，Webview 无模块系统要 IIFE；
+ *   - 两个 Webview 目标各自独立打包，互不牵连体积（新增界面时照抄一份即可）。
  */
 const esbuild = require("esbuild");
 
@@ -66,6 +68,13 @@ const builds = [
     format: "iife",
     platform: "browser",
     outfile: "dist/media/main.js",
+  },
+  {
+    // 侧栏 Webview：同样是浏览器沙箱，独立入口与产物
+    entryPoints: ["src/webview/media/sidebar/index.ts"],
+    format: "iife",
+    platform: "browser",
+    outfile: "dist/media/sidebar.js",
   },
 ];
 

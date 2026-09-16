@@ -1,10 +1,7 @@
-import { randomBytes } from 'node:crypto';
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
-
 import * as vscode from 'vscode';
 
 import type { PanelMessage, PanelResponse } from '../shared/messages.js';
+import { asWebviewUri, getNonce, readTemplate, renderTemplate } from './html.js';
 
 /**
  * 示例 Webview 面板，演示四个核心机制：
@@ -81,26 +78,19 @@ export class KairaiPanel {
   /**
    * 读取静态 HTML 模板，注入 nonce、CSP 来源与本地资源地址。
    * 模板占位符：{{cspSource}} {{nonce}} {{styleUri}} {{scriptUri}}
+   * 注入逻辑与侧栏（src/sidebar/provider.ts）共用 src/webview/html.ts。
    */
   private renderHtml(context: vscode.ExtensionContext): string {
     const webview = this.panel.webview;
-    const mediaDir = vscode.Uri.joinPath(context.extensionUri, 'media');
-    const template = readFileSync(join(context.extensionUri.fsPath, 'media', 'panel.html'), 'utf8');
+    const template = readTemplate(context.extensionUri, 'media', 'panel.html');
 
-    return template
-      .replaceAll('{{cspSource}}', webview.cspSource)
-      .replaceAll('{{nonce}}', getNonce())
-      .replaceAll(
-        '{{styleUri}}',
-        webview.asWebviewUri(vscode.Uri.joinPath(mediaDir, 'style.css')).toString(),
-      )
-      .replaceAll(
-        '{{scriptUri}}',
-        // main.ts 经 esbuild 打包到 dist/media/main.js（见 esbuild.js）
-        webview.asWebviewUri(
-          vscode.Uri.joinPath(context.extensionUri, 'dist', 'media', 'main.js'),
-        ).toString(),
-      );
+    return renderTemplate(template, {
+      cspSource: webview.cspSource,
+      nonce: getNonce(),
+      styleUri: asWebviewUri(webview, context.extensionUri, 'media', 'style.css'),
+      // main.ts 经 esbuild 打包到 dist/media/main.js（见 esbuild.js）
+      scriptUri: asWebviewUri(webview, context.extensionUri, 'dist', 'media', 'main.js'),
+    });
   }
 
   private dispose(): void {
@@ -110,9 +100,4 @@ export class KairaiPanel {
       this.disposables.pop()!.dispose();
     }
   }
-}
-
-/** 生成密码学安全的 32 字节随机 nonce，用于 CSP 白名单（不能用 Math.random）。 */
-function getNonce(): string {
-  return randomBytes(32).toString('base64url');
 }

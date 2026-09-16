@@ -14,10 +14,10 @@
         ├──► 集成测试 vscode-test ──► 在真实 VS Code 实例中运行
         │
         ▼
-esbuild 打包（生产模式：压缩、去 sourcemap，双产物）
+esbuild 打包（生产模式：压缩、去 sourcemap，三产物）
         │
         ▼
-dist/extension.js（扩展宿主）+ dist/media/main.js（Webview）
+dist/extension.js（扩展宿主）+ dist/media/main.js（面板）+ dist/media/sidebar.js（侧栏）
         │
         ▼
 vsce package ──► .vscodeignore 过滤 ──► kairai-scaffold-0.0.1.vsix
@@ -47,7 +47,7 @@ vsce publish ──► Visual Studio Marketplace（审核后上架）
 用 VS Code 打开项目根目录，按 **F5**：
 
 1. `preLaunchTask` 启动默认构建任务 `npm run watch`：
-   - `watch:esbuild`：esbuild 监听模式，同时重建 `dist/extension.js`（扩展宿主）与 `dist/media/main.js`（Webview）；
+   - `watch:esbuild`：esbuild 监听模式，同时重建 `dist/extension.js`（扩展宿主）与两个 Webview 产物（`dist/media/main.js` 面板、`dist/media/sidebar.js` 侧栏）；
    - `watch:tsc` / `watch:tsc:webview`：扩展侧与 Webview 侧各自持续类型检查。
 2. VS Code 启动 **Extension Development Host**——一个加载了本扩展的全新窗口（`--extensionDevelopmentPath` 指向项目目录）；
 3. 在新窗口里 `Cmd/Ctrl+Shift+P` → 输入 `Kairai`，即可执行示例命令、打开面板。
@@ -138,11 +138,11 @@ vsce 自动排除 `node_modules/`、`.git/` 等，其余由 [.vscodeignore](../.
 
 | 排除 | 原因 |
 | --- | --- |
-| `src/`、`out/`、`**/*.ts`、`**/*.map` | 源码已打包进 `dist/`（`extension.js` 与 `media/main.js`），测试代码用户不需要 |
+| `src/`、`out/`、`**/*.ts`、`**/*.map` | 源码已打包进 `dist/`（`extension.js` 与 `media/*.js`），测试代码用户不需要 |
 | `.vscode/`、`.github/`、`esbuild.js`、`eslint.config.mjs`、`tsconfig.json` 等 | 纯开发工具链 |
 | `docs/`、`package-lock.json`、`.gitignore` | 与运行时无关 |
 
-保留的只有：`dist/`（扩展入口 + Webview 脚本）、`media/`（HTML/CSS 模板）、`package.json`、`README.md`、`CHANGELOG.md`、`LICENSE`。
+保留的只有：`dist/`（扩展入口 + 两个 Webview 脚本）、`media/`（HTML/CSS 模板与活动栏图标）、`package.json`、`README.md`、`CHANGELOG.md`、`LICENSE`。
 
 打包后可用 `npx vsce ls` 查看 .vsix 的实际内容清单，确认没有误收/漏收文件。
 

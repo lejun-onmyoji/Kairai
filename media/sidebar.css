@@ -1,0 +1,202 @@
+/*
+ * 侧栏样式。与面板样式（media/style.css）保持同一套约定：
+ * 全部颜色取自 VS Code 主题变量，自动适配深浅色主题，不写死任何颜色值。
+ * 侧栏宽度通常只有 200~400px，所以字号与间距都比面板更紧凑。
+ */
+:root {
+  --bg: var(--vscode-editor-background);
+  --fg: var(--vscode-editor-foreground);
+  --accent: var(--vscode-button-background);
+  --accent-fg: var(--vscode-button-foreground);
+  --border: var(--vscode-panel-border);
+  --muted: var(--vscode-descriptionForeground);
+  --surface: var(--vscode-input-background);
+  --hover: var(--vscode-toolbar-hoverBackground, rgba(128, 128, 128, 0.15));
+}
+
+body {
+  margin: 0;
+  padding: 0.75rem;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--vscode-font-family);
+  font-size: var(--vscode-font-size);
+}
+
+h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.05rem;
+}
+
+h3 {
+  margin: 1rem 0 0.4rem;
+  font-size: 0.9rem;
+}
+
+.hint {
+  margin: 0 0 0.75rem;
+  color: var(--muted);
+  font-size: 0.9em;
+  line-height: 1.5;
+}
+
+/* ---------------------------------------------------------- 顶部功能切换栏 */
+
+.feature-nav {
+  display: flex;
+  gap: 0.2rem;
+  margin: -0.75rem -0.75rem 0.75rem;
+  padding: 0.4rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+}
+
+.feature-tab {
+  flex: 0 0 auto;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid transparent;
+  border-radius: 3px;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.85em;
+  white-space: nowrap;
+}
+
+.feature-tab:hover {
+  color: var(--fg);
+  background: var(--hover);
+}
+
+.feature-tab.is-active {
+  color: var(--fg);
+  border-color: var(--vscode-focusBorder, var(--accent));
+  background: var(--hover);
+}
+
+/* -------------------------------------------------------------- 通用控件 */
+
+button.primary {
+  background: var(--accent);
+  color: var(--accent-fg);
+  border: none;
+  border-radius: 2px;
+  padding: 0.35rem 0.8rem;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button.primary:hover {
+  filter: brightness(1.1);
+}
+
+.toolbar {
+  display: flex;
+  gap: 0.4rem;
+  margin: 0.5rem 0;
+}
+
+.log,
+.transcript {
+  margin-top: 0.4rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+  max-height: 14rem;
+  overflow-y: auto;
+}
+
+.log-line {
+  color: var(--muted);
+  font-size: 0.85em;
+  line-height: 1.6;
+}
+
+.notice {
+  margin: 0.5rem 0 0;
+  color: var(--muted);
+  font-size: 0.85em;
+  line-height: 1.5;
+}
+
+/* ------------------------------------------------------------ Agent Harness */
+
+.roadmap {
+  margin: 0.5rem 0;
+  padding-left: 1.1rem;
+  color: var(--muted);
+  font-size: 0.85em;
+  line-height: 1.7;
+}
+
+.entry {
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.25rem 0;
+  font-size: 0.85em;
+  line-height: 1.5;
+}
+
+.entry-role {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.entry-user .entry-role {
+  color: var(--vscode-textLink-foreground, var(--accent));
+}
+
+.composer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.composer-input {
+  width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
+  background: var(--surface);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 0.35rem;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.composer-input:focus {
+  outline: 1px solid var(--vscode-focusBorder, var(--accent));
+  outline-offset: -1px;
+}
+
+/* ------------------------------------------------------------------ 井字棋 */
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  margin: 0.5rem 0;
+  aspect-ratio: 1 / 1;
+  max-width: 16rem;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-size: 1.4rem;
+  font-family: inherit;
+}
+
+.cell:disabled {
+  cursor: not-allowed;
+  opacity: 0.85;
+}

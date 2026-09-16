@@ -4,6 +4,8 @@ import * as vscode from 'vscode';
 
 import { registerHelloWorldCommand } from './commands/helloWorld.js';
 import { registerOpenPanelCommand } from './commands/openPanel.js';
+import { registerSidebarCommands } from './commands/sidebar.js';
+import { registerSidebar } from './sidebar/index.js';
 import { registerStatusBar } from './statusBar.js';
 
 /**
@@ -14,8 +16,13 @@ export function activate(context: vscode.ExtensionContext): void {
   console.log('[kairai] 扩展已激活');
 
   registerHelloWorldCommand(context);
-  registerOpenPanelCommand(context);
+  registerOpenPanelCommand(context); 
   registerStatusBar(context);
+
+  // 侧栏：注册 WebviewView 与配套命令。
+  // provider 需要交给命令层（用于打开侧栏 / 切换功能），所以这里接收返回值。
+  const sidebar = registerSidebar(context);
+  registerSidebarCommands(context, sidebar);
 }
 
 /**
